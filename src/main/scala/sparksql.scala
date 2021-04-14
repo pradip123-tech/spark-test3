@@ -53,7 +53,7 @@ object sparksql extends App {
 
 
 
-
+spark.stop()
 
 
 
