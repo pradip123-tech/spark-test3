@@ -32,6 +32,9 @@ object large_file extends App{
   ).show(false)
 
 
+  scala.io.StdIn.readLine()
+
+  spark.stop()
 
 
 }

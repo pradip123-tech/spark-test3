@@ -30,12 +30,16 @@ object DROP_DUPLI extends App{
 
 val df1 = spark.createDataFrame(myList).toDF("orderid","orderdate","customerid","status")
 
+
+  df1.show()
+
+
 val df2 = df1
   .withColumn("orderdate", unix_timestamp(col("orderdate")
   .cast(DateType)))
   .withColumn("newid", monotonically_increasing_id())
   .dropDuplicates("orderdate","customerid")
-  .drop("orderid").show()
+  .drop("orderid").count()
 
 
 
