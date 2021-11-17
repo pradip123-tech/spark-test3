@@ -1,10 +1,9 @@
-import org.apache.log4j.{Level, Logger}
 import org.apache.spark.SparkConf
 import org.apache.spark.sql.functions.{col, expr}
 import org.apache.spark.sql.types.{DoubleType, StringType, StructField, StructType}
 import org.apache.spark.sql.{SaveMode, SparkSession}
 object pm1 extends  App {
-   Logger.getLogger("org").setLevel(Level.ERROR)
+  // Logger.getLogger("org").setLevel(Level.ERROR)
 
 
 

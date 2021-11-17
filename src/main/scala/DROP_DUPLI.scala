@@ -1,13 +1,12 @@
-import org.apache.log4j.{Level, Logger}
 import org.apache.spark.SparkConf
 import org.apache.spark.sql.SparkSession
-import org.apache.spark.sql.functions.{col, monotonically_increasing_id, unix_timestamp}
-import org.apache.spark.sql.types.DateType
+import org.apache.spark.sql.functions.{col, date_format}
 
 object DROP_DUPLI extends App{
 
 
-  Logger.getLogger("org").setLevel(Level.ERROR)
+  //Logger.getLogger("org").setLevel(Level.ERROR)
+
   val sparkConf = new SparkConf()
   sparkConf.set("spark.app.name","sparksqlex")
   sparkConf.set("spark.master", "local[2]")
@@ -28,19 +27,32 @@ object DROP_DUPLI extends App{
   )
 
 
-val df1 = spark.createDataFrame(myList).toDF("orderid","orderdate","customerid","status")
+  val df1 = spark.createDataFrame(myList).toDF("orderid","orderdate","customerid","status")
 
 
   df1.show()
 
 
-val df2 = df1
-  .withColumn("orderdate", unix_timestamp(col("orderdate")
-  .cast(DateType)))
-  .withColumn("newid", monotonically_increasing_id())
-  .dropDuplicates("orderdate","customerid")
-  .drop("orderid").count()
 
 
+  val df3= df1.selectExpr("cast(orderdate as date) orderdate")
 
+
+ val df4 = df3.select(col("orderdate"),date_format(col("orderdate"),"yyyy-MM").as("new_col"))
+
+df4.show()
+  df3.printSchema()
+
+
+ /** val df2 = df1
+    .withColumn("orderdate", unix_timestamp(col("orderdate")
+      .cast(DateType)))
+    .withColumn("newid", monotonically_increasing_id())
+    .dropDuplicates("orderdate","customerid")
+    .drop("orderid").count() **/
+
+
+  scala.io.StdIn.readLine()
+
+  spark.stop()
 }
