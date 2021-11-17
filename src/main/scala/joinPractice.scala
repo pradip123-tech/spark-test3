@@ -1,7 +1,7 @@
 import org.apache.log4j.Level._
 import org.apache.log4j.Logger
 import org.apache.spark.SparkConf
-import org.apache.spark.sql.SparkSession.builder
+import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.functions.count
 
 object joinPractice extends App {
@@ -12,7 +12,7 @@ object joinPractice extends App {
 
   Logger.getLogger("org").setLevel(ERROR)
 
-  val spark = builder()
+  val spark = SparkSession.builder()
     .config(sparkConf)
     .getOrCreate()
 
