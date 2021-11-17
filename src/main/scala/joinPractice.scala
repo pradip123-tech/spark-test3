@@ -40,7 +40,7 @@ object joinPractice extends App {
 val JoinDf= CutomerDf.join(OrderNew, JoinCondition, "left")
   .select("InvoiceNo", "Description", "Country", "CustomerID")
 
-  val co =JoinDf.select(count("*")).distinct().show()
+  val co =JoinDf.select(count("*")).distinct()
 
 
 
