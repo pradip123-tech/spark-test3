@@ -42,6 +42,6 @@ val JoinDf= CutomerDf.join(OrderNew, JoinCondition, "left")
 
   val co =JoinDf.select(count("*")).distinct()
 
-
+co.show()
 
 }
