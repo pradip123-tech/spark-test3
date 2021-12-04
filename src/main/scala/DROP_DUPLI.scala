@@ -1,5 +1,5 @@
 import org.apache.spark.SparkConf
-import org.apache.spark.sql.SparkSession
+import org.apache.spark.sql.{SQLContext, SparkSession}
 import org.apache.spark.sql.functions.{col, date_format}
 
 object DROP_DUPLI extends App{
@@ -42,17 +42,42 @@ object DROP_DUPLI extends App{
 
 df4.show()
   df3.printSchema()
-
+df3.coalesce(3)
 
  /** val df2 = df1
     .withColumn("orderdate", unix_timestamp(col("orderdate")
-      .cast(DateType)))
+    .cast(DateType)))
     .withColumn("newid", monotonically_increasing_id())
     .dropDuplicates("orderdate","customerid")
     .drop("orderid").count() **/
 
 
   scala.io.StdIn.readLine()
+  case class Stuff(a:String,b:Int)
+
+  val sqlContext = new SQLContext(sparkContext)
+  import sqlContext.implicits._
+
+
+  val d= sparkContext.parallelize(Seq( ("a",1),("b",2),
+    ("",3) ,("d",4)).map { x => Stuff(x._1,x._2)  }).toDF
+
+
+
 
   spark.stop()
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
