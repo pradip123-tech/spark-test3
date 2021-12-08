@@ -1,7 +1,6 @@
 import org.apache.spark.SparkConf
-import org.apache.spark.sql.{SQLContext, SparkSession}
+import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.functions.{col, date_format}
-
 object DROP_DUPLI extends App{
 
 
@@ -55,17 +54,20 @@ df3.coalesce(3)
   scala.io.StdIn.readLine()
   case class Stuff(a:String,b:Int)
 
-  val sqlContext = new SQLContext(sparkContext)
-  import sqlContext.implicits._
-
-
-  val d= sparkContext.parallelize(Seq( ("a",1),("b",2),
-    ("",3) ,("d",4)).map { x => Stuff(x._1,x._2)  }).toDF
+  val sc= spark.sparkContext
 
 
 
 
-  spark.stop()
+  val d= sc.parallelize(Seq( ("a",1),("b",2),
+    ("",3) ,("d",4)).map { x => Stuff(x._1,x._2)  })
+
+  val sum=0
+  val sumData=Array(1,2,3,4)
+
+  val rdd=sc.parallelize(sumData)
+
+  rdd.foreach(x => x+sum)
 
 }
 

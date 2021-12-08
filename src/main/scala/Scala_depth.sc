@@ -84,7 +84,9 @@ val func = udf( (s:String) => if(s.isEmpty) 0 else 1 )
 
 
 
+val x=("pradip","25","94000")
 
+x._3
 
 
 
