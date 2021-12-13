@@ -27,10 +27,10 @@ val spark=SparkSession
   import spark.implicits._
 
 
-  val myList=List("WARN,216-05-15 04:55:14",
-    "FATAL,216-05-15 04:55:14",
-    "WARN,216-05-15 04:55:14",
-    "INFO,216-05-15 04:55:14")
+  val myList=List("WARN,2016-05-15 04:55:14",
+    "FATAL,2018-03-15 04:55:14",
+    "WARN,2016-05-15 04:55:14",
+    "INFO,2017-06-15 04:55:14")
 
 
   val rdd1=spark.sparkContext.parallelize(myList)
@@ -45,12 +45,15 @@ val spark=SparkSession
 
   df1.createOrReplaceTempView("final")
 
-  spark.sql("select level, collect_list(datetime) as datetime from final group by level order by level").show(false)
+  //spark.sql("select level, collect_list(datetime) as datetime from final group by level order by level").show(false)
 
+// we want to extract month out of the datetime
 
+  val df2 =spark.sql("select level, date_format(datetime, 'MMMM') as datetime from final")
 
+df2.createOrReplaceTempView("final2")
 
-
+//spark.sql("select level,datetime, count(1) from final2 group by level,datetime").show
 
 
 }
