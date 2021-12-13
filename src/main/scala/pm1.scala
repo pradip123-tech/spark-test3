@@ -1,9 +1,11 @@
+import org.apache.log4j.{Level, Logger}
 import org.apache.spark.SparkConf
-import org.apache.spark.sql.functions.{col, expr}
-import org.apache.spark.sql.types.{DoubleType, StringType, StructField, StructType}
+import org.apache.spark.sql.functions.{col, date_format, expr}
+import org.apache.spark.sql.types._
 import org.apache.spark.sql.{SaveMode, SparkSession}
+import org.apache.spark.util.SizeEstimator
 object pm1 extends  App {
-  // Logger.getLogger("org").setLevel(Level.ERROR)
+   Logger.getLogger("org").setLevel(Level.ERROR)
 
 
 
@@ -47,7 +49,7 @@ val NewSchema = StructType(Array(
 
   df.withColumn("newprice", expr("price > 40")).show(false)
 
-df.select(col("price"),col("symbol"))
+
 
 
   spark.sql("create database if not exists retail")
@@ -61,7 +63,14 @@ df.write
 
   spark.catalog.listTables("retail").show()
 
+  SizeEstimator.estimate(df)
 
+
+  val df1=df.withColumn("date", col("date").cast(DateType))
+
+  df1.printSchema()
+
+val df2=df1.withColumn("NF", date_format(col("date"), "MMMM")).show()
 
 
 
