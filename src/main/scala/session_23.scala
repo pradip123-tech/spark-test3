@@ -56,4 +56,23 @@ df2.createOrReplaceTempView("final2")
 //spark.sql("select level,datetime, count(1) from final2 group by level,datetime").show
 
 
+
+  val columns = Seq("Seqno","Quote")
+  val data = Seq(("1", "Be the change that you wish to see in the world"),
+    ("2", "Everyone thinks of changing the world, but no one thinks of changing himself."),
+    ("3", "The purpose of our lives is to be happy.")
+  )
+  val dff = data.toDF(columns:_*)
+  //dff.show(false)
+
+//create a function.
+
+
+
+  val convertCase =  (strQuote:String) => {
+    val arr = strQuote.split(" ")
+    arr.map(f=>  f.substring(0,1).toUpperCase + f.substring(1,f.length)).mkString(" ")
+  }
+
+
 }
