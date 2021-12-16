@@ -1,5 +1,6 @@
 import org.apache.log4j.{Level, Logger}
 import org.apache.spark.sql.SparkSession
+import org.apache.spark.sql.functions.{col, udf}
 
 object session_23 extends  App {
   Logger.getLogger("org").setLevel(Level.ERROR)
@@ -74,5 +75,10 @@ df2.createOrReplaceTempView("final2")
     arr.map(f=>  f.substring(0,1).toUpperCase + f.substring(1,f.length)).mkString(" ")
   }
 
+
+  // convert to UDF
+  val convertUDF = udf(convertCase)
+
+  dff.select(col("Seqno"), convertUDF(col("Quote")).as("Quote")).show(false)
 
 }
