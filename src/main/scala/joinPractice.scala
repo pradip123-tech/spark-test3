@@ -1,5 +1,3 @@
-import org.apache.log4j.Level._
-import org.apache.log4j.Logger
 import org.apache.spark.SparkConf
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.functions.count
@@ -10,7 +8,7 @@ object joinPractice extends App {
   sparkConf.set("spark.app.name", "new1")
   sparkConf.set("spark.master", "local[1]")
 
-  Logger.getLogger("org").setLevel(ERROR)
+ // Logger.getLogger("org").setLevel(ERROR)
 
   val spark = SparkSession.builder()
     .config(sparkConf)
@@ -37,12 +35,19 @@ object joinPractice extends App {
 
   val JoinCondition = CutomerDf.col("CustomerID") === OrderNew.col("CustID")
 
-val JoinDf= CutomerDf.join(OrderNew, JoinCondition, "left")
+
+  spark.conf.set("spark.sql.autoBroadcastJoinThreshold",-1)
+
+  val JoinDf= CutomerDf.join(OrderNew, JoinCondition, "inner")
   .select("InvoiceNo", "Description", "Country", "CustomerID")
 
+  JoinDf.write.save("src/main/resources/pm/Output1")
+
+  JoinDf.show(false)
   val co =JoinDf.select(count("*")).distinct()
 
 co.count()
+  scala.io.StdIn.readLine()
 
-
+  spark.stop()
 }
