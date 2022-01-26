@@ -1,6 +1,7 @@
 import org.apache.log4j.{Level, Logger}
 import org.apache.spark.sql.SparkSession
-import org.apache.spark.sql.functions.{col, udf}
+import org.apache.spark.sql.functions.{col, date_format, udf}
+import org.apache.spark.sql.types.DateType
 
 object session_23 extends  App {
   Logger.getLogger("org").setLevel(Level.ERROR)
@@ -28,10 +29,10 @@ val spark=SparkSession
   import spark.implicits._
 
 
-  val myList=List("WARN,2016-05-15 04:55:14",
-    "FATAL,2018-03-15 04:55:14",
-    "WARN,2016-05-15 04:55:14",
-    "INFO,2017-06-15 04:55:14")
+  val myList=List("WARN,2016-05-15",
+    "FATAL,2018-03-15",
+    "WARN,2016-05-15",
+    "INFO,2017-06-15")
 
 
   val rdd1=spark.sparkContext.parallelize(myList)
@@ -41,6 +42,14 @@ val spark=SparkSession
 
   val df1=rdd2.toDF()
 
+  df1.unpersist()
+
+  val df4=df1.withColumn("datetime", col("datetime").cast(DateType))
+
+df4.printSchema()
+
+  df4.withColumn("datetime",
+    date_format(col("datetime"),"yyyy-MMM-dd")).show()
 
   /** we want to use spark sql here */
 
@@ -55,7 +64,6 @@ val spark=SparkSession
 df2.createOrReplaceTempView("final2")
 
 //spark.sql("select level,datetime, count(1) from final2 group by level,datetime").show
-
 
 
   val columns = Seq("Seqno","Quote")
@@ -81,4 +89,6 @@ df2.createOrReplaceTempView("final2")
 
   dff.select(col("Seqno"), convertUDF(col("Quote")).as("Quote")).show(false)
 
+
+  scala.io.StdIn.readLine()
 }
