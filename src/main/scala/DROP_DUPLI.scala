@@ -4,7 +4,7 @@ import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.functions.{col, monotonically_increasing_id, unix_timestamp}
 import org.apache.spark.sql.types.DateType
 
-object DROP_DUPLI extends App{
+object DROP_DUPLI extends App {
 
 
   Logger.getLogger("org").setLevel(Level.ERROR)
@@ -35,7 +35,7 @@ val df2 = df1
   .cast(DateType)))
   .withColumn("newid", monotonically_increasing_id())
   .dropDuplicates("orderdate","customerid")
-  .drop("orderid").show()
+  .drop("orderid")
 
 
 
