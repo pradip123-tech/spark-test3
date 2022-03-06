@@ -43,20 +43,9 @@ object sparksql extends App {
 
 
 
- val df1 = orderDf.selectExpr("Registrar","concat(District, '_Jilah') as NEW").show(false)
-
-
-
-
-
-
-
-
+ val df1 = orderDf.selectExpr("Registrar","concat_ws(District, '_Jilah') as NEW").show(false)
 
 spark.stop()
-
-
-
 
 }
 

@@ -1,7 +1,5 @@
 import org.apache.spark.SparkConf
 import org.apache.spark.sql.SparkSession
-import org.apache.spark.sql.functions.{col, date_format}
-object DROP_DUPLI extends App{
 
 
   //Logger.getLogger("org").setLevel(Level.ERROR)
